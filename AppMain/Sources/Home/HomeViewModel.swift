@@ -8,12 +8,13 @@
 import Combine
 import GithubAPIClient
 
-actor HomeViewModel: ObservableObject {
-
-    @MainActor @Published var id: Int = -1
-    @MainActor @Published var login: String = ""
-    @MainActor @Published var followers: Int = 0
-    @MainActor @Published var following: Int = 0
+@MainActor
+final class HomeViewModel: ObservableObject {
+    
+    @Published var id: Int = -1
+    @Published var login: String = ""
+    @Published var followers: Int = 0
+    @Published var following: Int = 0
     
     let client = GithubAPIClient()
     
@@ -24,12 +25,10 @@ actor HomeViewModel: ObservableObject {
         
         do {
             let data: UserInformation = try await client.send(request: req)
-            await MainActor.run { [weak self] in
-                self?.id = data.id
-                self?.login = data.login
-                self?.followers = data.followers
-                self?.following = data.following
-            }
+            self.id = data.id
+            self.login = data.login
+            self.followers = data.followers
+            self.following = data.following
         } catch {
             print(error)
         }
