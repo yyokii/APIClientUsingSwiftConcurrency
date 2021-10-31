@@ -7,13 +7,13 @@
 
 import SwiftUI
 
-import AppMain
+import Home
 
 @main
 struct GithubSearchApp: App {
     var body: some Scene {
         WindowGroup {
-            ContentView()
+            HomeView()
         }
     }
 }

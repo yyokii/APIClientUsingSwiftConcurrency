@@ -9,17 +9,20 @@ let package = Package(
     products: [
         .library(
             name: "AppMain",
-            targets: ["AppMain"]),
+            targets: ["Home"]),
     ],
     dependencies: [],
     targets: [
         .target(
-            name: "AppMain",
+            name: "GithubAPIClient",
             dependencies: []),
+        .target(
+            name: "Home",
+            dependencies: ["GithubAPIClient"]),
         
         // Test
         .testTarget(
             name: "AppMainTests",
-            dependencies: ["AppMain"]),
+            dependencies: ["Home"]),
     ]
 )
