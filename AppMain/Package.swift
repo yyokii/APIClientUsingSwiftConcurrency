@@ -10,18 +10,28 @@ let package = Package(
         .library(
             name: "AppMain",
             targets: ["Home"]),
+        .library(
+            name: "AppMain2",
+            targets: [
+                "APIClient2"
+            ]),
     ],
     dependencies: [],
     targets: [
         .target(
             name: "APIClient2",
-            dependencies: []),
+            dependencies: [
+                "KeychainClient"
+            ]),
         .target(
             name: "GithubAPIClient",
             dependencies: []),
         .target(
             name: "Home",
             dependencies: ["GithubAPIClient"]),
+        .target(
+            name: "KeychainClient",
+            dependencies: []),
         
         // Test
         .testTarget(
