@@ -14,6 +14,9 @@ let package = Package(
     dependencies: [],
     targets: [
         .target(
+            name: "APIClient2",
+            dependencies: []),
+        .target(
             name: "GithubAPIClient",
             dependencies: []),
         .target(
