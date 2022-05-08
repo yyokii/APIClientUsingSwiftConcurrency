@@ -43,7 +43,7 @@ actor APIClient2 {
 
         try await delegate.client(willSendRequest: &request)
 
-        return try await session.data(for: request, delegate: nil)
+        return try await session.data(for: request)
     }
 
     private func makeRequest<T>(for request: Request<T>) async throws -> URLRequest {
@@ -100,13 +100,18 @@ actor APIClient2 {
     }
 }
 
-public enum APIError: Error, LocalizedError {
-    case unacceptableStatusCode(Int)
-
-    public var errorDescription: String? {
-        switch self {
-        case .unacceptableStatusCode(let statusCode):
-            return "Response status code was unacceptable: \(statusCode)."
+@available(iOS, deprecated: 15.0, message: "iOS15 or later should use the standard API.")
+extension URLSession {
+    func data(for url: URLRequest) async throws -> (Data, URLResponse) {
+         try await withCheckedThrowingContinuation { continuation in
+            let task = self.dataTask(with: url) { data, response, error in
+                 guard let data = data, let response = response else {
+                     let error = error ?? URLError(.badServerResponse)
+                     return continuation.resume(throwing: error)
+                 }
+                 continuation.resume(returning: (data, response))
+             }
+             task.resume()
         }
     }
 }
